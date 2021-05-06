@@ -1,32 +1,69 @@
-<h1>進度</h1>
-<h2>W5更新版本</h2>
-<p>先進入倉儲之後打開fall2020_v2</p>
+<h1>First</h1><br/>進度<br/>W5更新版本
+<p>先進入倉儲後打開fall2020_v2</p>
 <p>輸入指令</p>
-<p><span style="background-color: #ff0000; color: #ffffff;"></span></p>
-<p><span style="color: #333333; background-color: #ffcc00;">cd tmp</span></p>
-<p><span style="color: #333333; background-color: #ffcc00;">cd wcm2021</span></p>
-<p><span style="color: #333333; background-color: #ffcc00;">cd cmsimde</span></p>
-<p><span style="color: #333333; background-color: #ffcc00;">git pull origin master</span></p>
-<p><span style="color: #333333; background-color: #ffffff;">之後若跑出下圖的樣式，表示更新成功</span></p>
-<p><span style="color: #333333; background-color: #ffffff;"><img alt="" height="296" src="/images/更新的圖片.png" width="567"/></span></p>
 <p></p>
-<h2>W6 HEROKU</h2>
-<p><img alt="" height="427" src="/images/下載HEROKU.png" width="565"/></p>
+<p>cd tmp</p>
+<p>cd wcm2021</p>
+<p>cd cmsimde</p>
+<p>git pull origin master</p>
+<p>之後若跑出下圖的樣式，表示更新成功</p>
+<p></p>
+<p></p>
+<br/>W6 HEROKU<br/><br/>
+<h2>W7 SSH</h2>
+<p>因為進度漏了SSH的步驟所以參考資料<strong>ssh了沒</strong>的步驟去操作</p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p></p>
+<p>------</p>
+<p>ssh的原理</p>
+<p>SSH 網路連線加密機制<br/>SSH 指 Secure SHell, 是一種網路連線加密機制, 當我們在 Mac OS 或 Linux 操作系統中的 Terminal 或 XTerm 時, 可以利用 ssh 帳號@遠端主機 ip 或符號名稱, 就可以輸入認證密碼, 登入到遠端主機.</p>
+<p>一般針對公開的 Github 倉儲, 任何人都可以直接透過 https 協定 clone 倉儲, 無需認證, 但是倉儲協同者若要從近端將改版資料送到 Github, 就必須通過認證, 假如採 https 協定, 則倉儲協同者在推送改版資料時, 必須提供帳號與密碼.</p>
+<p>除了 https 協定, Github 也接受倉儲的協同者以 SSH 連線的方式, git clone private 倉儲, 或以 SSH 連線的方式將近端改版資料推送到遠端倉儲.</p>
+<p>SSH 的連線加密機制依賴 private key 與 public key 之間的配對, 當使用者建立 SSH key pair 時, private key 必須保護在近端, 而 public key 則必須送到進行認證的遠端伺服器中</p>
+<p>建立 OpenSSH key pair<br/>Github 伺服器所支援的 SSH 為 OpenSSH 檔案格式的協定, 因此使用者要送到 Github 伺服器上的 OpenSSH 格式 public key, 可以透過 portablegit 中的 sh.exe 進入 SHell, 然後利用以下指令建立採 rsa 加密演算法的 key pair:</p>
+<p>1<br/>ssh-keygen -t rsa -b 4096 -C "使用者學號"<br/>在 -C 後的使用者學號字串, 會直接附加在 OpenSSH public key 檔案的最後端, 讓使用者得以辨識 public key 的對應使用者, 而所建立的 OpenSSH private key 則可以透過 puttygen 轉換為 putty 特有檔案格式.</p>
+<p>Putty 作為 SSH 連線客戶端工具<br/>Putty 套件可用於 Windows 與 Linux 操作系統, 可以讓使用者以 SSH 加密機制遠端登入到其他伺服器主機, 由於電腦輔助設計室電腦的第三磁區上課時會轉為純 IPv6 協定上網, 當使用者要將近端改版資料推送到遠端時, 由於 Github 至今仍只支援 IPv4 網路協定, 因此無論是以 https 或 ssh 方式連線, 都必須透過能同時支援 IPv4 與 IPv6 的代理主機.</p>
+<p>以 https 協定對 Github 連線的代理主機設定位於 home/.gitconfig, 而在 Windows 10 操作系統中採 SSH 對 Github 連線, 就必須將代理主機與 private key 的設定, 透過 Putty 完成.</p>
+<p>以 SSH 協定與 Github 連線<br/>1. 建立一對 OpenSSH key pair, private key 保留在近端, 將 public key 登記在 Github 所屬帳號設定中.</p>
+<p>2. 近端可攜系統啟動時, 必須確認已經設定</p>
+<p>1<br/>set GIT_SSH=%Disk%:\putty\plink.exe<br/>表示 git 將透過 putty 工具以 ssh 加密協定對 Github 連線</p>
+<p>3. 在 Putty 中設定對 github.com ssh 時必須提供的 Proxy 代理主機設定與 Auth 認證所需的近端 private key, 而且必須利用 puttygen 將 OpenSSH 格式轉為 putty 檔案格式</p>
+<p>4. 無論在 git clone 或 git push (URL 位於倉儲 .git/config 中), URL 必須使用 git@github.com:帳號/倉儲名稱.git 連線</p>
+<p>利用 SSH 對 Gitlab 連線<br/>首先必須要將 OpenSSH 格式的 public key 登錄到 Gitlab 帳號下<br/>確定已經利用 putty.exe 建立 session 名稱為 gitlab.com 的設定, 其中設定 AUTH 與 Proxy 資料<br/>修改各倉儲中 .git/config 的 gitlab remote add 設定, 以 url = git@gitlab.com:user_name/url 對 gitlab 連接.</p>
+<p></p>
+<h2>W8 查詢教務教室使用班級</h2>
+<p><br/>先去wcm2021的網站找到這串字碼 複製到空白頁面</p>
+<p></p>
+<p>儲存這個到自己的隨身碟裡面</p>
+<p></p>
+<p>到學校教務處網站搜尋要查詢的班級</p>
+<p></p>
+<p>舉BGA0810教室為例，紅色圈起來的地方是需要更改的，更改完後儲存到隨身碟裡面即可!!</p>
+<p></p>
+<p>W11<br/>網址輸入http://a.kmol.info:88/</p>
+<p>找到robodk522_portable.7z並且下載至桌面</p>
+<p></p>
+<p></p>
+<p></p>
+<p>資料夾找到bin-RoboDK.exe打開範例後進入到程式操作</p>
+<p></p>
+<p></p>
+<p>w1<br/>到了新的學期，好開心又可以學習更多網際內容及如何操作python</p>
+<p>w2<br/>這個禮拜下載了新的fall v2比較新的版本，但很厲害的是我竟然可以下載順利 讚啦!</p>
+<p></p>
 <p>點選heroku.7z</p>
-<p>下載至隨身碟後解壓縮</p>
-<p><img alt="" height="724" src="/images/1.png" width="560"/></p>
-<h1>w1</h1>
-<p>到了新的學期，好開心又可以學習更多網際內容及如何操作python</p>
-<h1>w2</h1>
-<p>這個禮拜下載了新的fall v2比較新的版本，但很厲害的是我竟然可以下載順利 讚啦!</p>
-<h1>w3</h1>
-<p>上次我沒有推到近端推成功這禮拜就趕緊話機丸，不然下禮拜真的混出示，進度一直delay</p>
+<p>下載至隨身碟後解壓縮完就可以使用了</p>
+<p></p>
+<p>w3<br/>上次我沒有推到近端推成功這禮拜就趕緊話機丸，不然下禮拜真的混出示，進度一直delay</p>
 <p>讚讚!希望我之後使用能順利一點 不然頭很痛...</p>
-<h1>w4</h1>
-<p>今天頭殼麻麻 不知道在幹什麼</p>
+<p>w4<br/>今天頭殼麻麻 不知道在幹什麼</p>
 <p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD23123</p>
 <p></p>
 <p>=======</p>
-<h1>w5</h1>
-<p>666</p>
+<p>w5<br/>666</p>
 <p>&gt;&gt;&gt;&gt;&gt;&gt;&gt; 53a61879f9e991b75787204c0b9193e2a1b9b15c</p>
+<p></p>
